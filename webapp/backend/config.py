@@ -2,6 +2,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 class Config:
     MONGO_HOST1 = os.environ.get("MONGO_HOST1")
     MONGO_HOST2 = os.environ.get("MONGO_HOST2")
