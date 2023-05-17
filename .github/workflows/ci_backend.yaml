@@ -2,8 +2,7 @@ name: backend ci
 
 on:
   push:
-    tags:
-      - release/v*
+    branches: [ main ]
 
 jobs:
   build-and-push:
