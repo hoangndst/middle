@@ -1,10 +1,8 @@
-name: backend release
+name: backend ci
 
 on:
   push:
-    branches: [master]
-    paths:
-      - "webapp/backend/**"
+    branches: [ main ]
 
 jobs:
   build-and-push:
