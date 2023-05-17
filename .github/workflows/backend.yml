@@ -11,7 +11,7 @@ on:
       - "webapp/backend/**"
 
 jobs:
-  build:
+  test-backend:
     runs-on: ubuntu-latest
     env:
       TESTING: True
@@ -43,3 +43,4 @@ jobs:
         run: |
           cd webapp/backend
           pytest app/test.py --cov=app --cov-report=xml --cov-report=term-missing --cov-fail-under=80 --cov-branch
+   
