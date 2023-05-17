@@ -2,7 +2,8 @@ name: backend ci
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - release/v*
 
 jobs:
   build-and-push:
@@ -25,4 +26,4 @@ jobs:
           context: ./webapp/backend
           file: ./webapp/backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vdt-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vdt-backend:${{ github.ref }}
