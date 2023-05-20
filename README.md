@@ -427,6 +427,10 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
     <img src="./assets/alertmanager.png" width="1000" />
     <img src="./assets/alertmanager_slack.png" width="1000" />
   </div>
+- **`Minio`**: [**`https://minio.hoangnd.freeddns.org`**](https://minio.hoangnd.freeddns.org/)
+  <div align="center">
+    <img src="./assets/minio.png" width="1000" />
+  </div>
 
 ### **`Deploy Logging`**
 #### 1. Build Fluentd Docker Image
@@ -498,6 +502,17 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
   <div align="center">
     <img src="./assets/kibana.png" width="1000" />
   </div>
+
+### **`All Project Website`**
+- **`Frontend`**: [**`https://vdt-frontend.hoangnd.freeddns.org`**](https://vdt-frontend.hoangnd.freeddns.org)
+- **`Backend`**: [**`https://vdt-backend.hoangnd.freeddns.org`**](https://vdt-backend.hoangnd.freeddns.org/interns)
+- **`Traefik`**: [**`https://traefik.hoangnd.freeddns.org`**](https://traefik.hoangnd.freeddns.org/)
+- **`Grafana`**: [**`https://grafana.hoangnd.freeddns.org`**](https://grafana.hoangnd.freeddns.org/)
+  - username: `admin`
+  - password: `Hoang1999`
+- **`Thanos - Prometheus`**: [**`https://thanos.hoangnd.freeddns.org`**](https://thanos.hoangnd.freeddns.org/)
+- **`Alert Manager`**: [**`https://alertmanager.hoangnd.freeddns.org`**](https://alertmanager.hoangnd.freeddns.org/)
+- **`Minio`**: [**`https://minio.hoangnd.freeddns.org`**](https://minio.hoangnd.freeddns.org/)
 
 ### **`References`**
 - [**`Prometheus`**](https://prometheus.io/)
