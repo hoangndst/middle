@@ -1,72 +1,62 @@
 
-### Ansible
-1. What is Ansible?
-  - Ansible is an open-source software provisioning, configuration management, and application-deployment tool enabling infrastructure as code. It runs on many Unix-like systems, and can configure both Unix-like systems as well as Microsoft Windows. It includes its own declarative language to describe system configuration.
-  - Ansible is agentless, temporarily connecting remotely via SSH or Windows Remote Management (allowing remote PowerShell execution) to do its tasks.
-  - Ansible is built on Python, in contrast to the Ruby foundation of Puppet and Chef.
-2. Ansible Project Structure
-    - Ansible project structure is as follows:
-        ```bash
-        .
-        ├── inventories
-        │   └── digital_ocean
-        │       ├── group_vars
-        │       │   └── vm.yaml
-        │       └── hosts
-        ├── roles
-        │   ├── api
-        │   │   ├── defaults
-        │   │   |   └── main.yaml
-        │   │   ├── tasks
-        │   │   |   ├── deploy.yaml
-        │   │   |   ├── main.yaml
-        │   │   |   └── setup.yaml
-        │   ├── common
-        │   │   └── tasks
-        │   │       ├── docker.yaml
-        │   │       ├── main.yaml
-        │   │       └── repository.yaml
-        │   ├── db
-        │   │   ├── defaults
-        │   │   |   └── main.yaml
-        │   │   ├── tasks
-        │   │   |   ├── deploy.yaml
-        │   │   |   ├── init.yaml
-        │   │   |   ├── main.yaml
-        │   │   |   └── setup.yaml
-        │   ├──  lb
-        │   |   ├── defaults
-        │   |   |   └── main.yaml
-        │   |   ├── tasks
-        │   |   |   ├── deploy.yaml
-        │   |   |   ├── main.yaml
-        │   |   |   └── setup.yaml
-        |   |   └── templates
-        |   |       ├── dynamic.yaml.j2
-        |   |       └── traefik.yaml.j2
-        │   └── web
-        │       ├── defaults
-        │       |   └── main.yaml
-        │       └── tasks
-        │           ├── deploy.yaml
-        │           ├── init.yaml
-        │           ├── main.yaml
-        │           └── setup.yaml
-        ├── install_docker.yaml
-        └── deploy.yml
-        
-        ```
-        - **`inventories`**: This directory contains all the inventory files for different environments. In this project, we only have one environment which is `digital_ocean`.
-        - **`roles`**: This directory contains all the roles of the project. Each role contains `defaults`, `tasks` and `templates` directories. 
-            - **`defaults`**: This directory contains all the default lower priority variables for this role
-            - **`tasks`**: This directory contains all the tasks of the role.
-            - **`templates`**: This directory contains all the files for use with the template resource, templates end in `.j2`
-        - **`install_docker.yaml`**: This file contains the playbook for installing docker on the target hosts.
-        - **`deploy.yaml`**: This file contains the playbook for deploying the application on the target hosts.
+### Develop a simple 3-tier web application 
 
+### **`Containerization`**
+1. Move to [`frontend`](./webapp/frontend/) directory and build docker image
+    ```bash
+    docker build -t hoangndst/vdt-frontend:latest .
+    ```
+  - **`Docker History`**
+    ```bash
+    docker history hoangndst/vdt-frontend:latest
+    ```
+    <div align="center">
+        <img src="./assets/docker_history_frontend.png" width="1000" />
+    </div> 
+2. Move to [`backend`](./webapp/backend/) directory and build docker image
+    ```bash
+    docker build -t hoangndst/vdt-backend:latest .
+    ```
+  - **`Docker History`**
+    ```bash
+    docker history hoangndst/vdt-backend:latest
+    ```
+    <div align="center">
+        <img src="./assets/docker_history_backend.png" width="1000" />
+    </div>
+3. Login to docker hub if you have not logged in
+    ```bash
+    docker login
+    ```
+4. Push docker images to docker hub
+    ```bash
+    docker push hoangndst/vdt-frontend:latest
+    docker push hoangndst/vdt-backend:latest
+    ```
+### **`Continuous Integration`**
+#### 1. Setup backend test.
+  - Using pytest to test backend: [**test.py**](./webapp/backend/app/test.py)
+  - Deploy test mongo database
+  - Setup Github Action Workflow: [**test_backend.yml**](.github/workflows/test_backend.yml)
 
+#### 2. Auto run unit test when push to github
+  <div align="center">
+    <img src="./assets/ci_push_master.png" width="1000" />
+  </div>
 
-### Create NFS server for sharing data between nodes
+#### 3. Auto run unit test when open pull request
+  <div align="center">
+    <img src="./assets/ci_open_pr.png" width="1000" />
+  </div>
+
+#### 4. Test result
+  <div align="center">
+    <img src="./assets/ci_test_result.png" width="1000" />
+  </div>
+
+### **`Continuous Delivery`**
+
+### **`Create NFS server for sharing data between nodes`**
 1. Overview
 We will use 10GB disk to create NFS server for sharing data between containers. **`/dev/sda`**
     <div align="center">
@@ -104,26 +94,7 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
     sudo systemctl restart nfs-kernel-server
     ```
 
-### Build Frontend and Backend Docker Images
-1. Move to [`frontend`](./webapp/frontend/) directory and build docker image
-    ```bash
-    docker build -t hoangndst/vdt-frontend:latest .
-    ```
-2. Move to [`backend`](./webapp/backend/) directory and build docker image
-    ```bash
-    docker build -t hoangndst/vdt-backend:latest .
-    ```
-3. Login to docker hub if you have not logged in
-    ```bash
-    docker login
-    ```
-4. Push docker images to docker hub
-    ```bash
-    docker push hoangndst/vdt-frontend:latest
-    docker push hoangndst/vdt-backend:latest
-    ```
-
-### Project Structure Overview
+### **`Project Structure Overview`**
 <div align="center">
   <img src="./assets/project.png" width="1000" />
 </div>
@@ -147,7 +118,7 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
 - **`Nginx`**: We will use Nginx as web server for our application.
 - **`Flask`**: We will use Flask as backend framework for our application.
 
-### Deploy Application
+### **`Deploy Application`**
 1. Move to [`ansible`](./ansible/) directory
 2. Setup docker for your target environments in role **`common`**
 - Tasks:
@@ -355,7 +326,7 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
     <img src="./assets/backend_lb_demo.gif" width="1000" />
   </div>
 
-### Deploy Monitoring
+### **`Deploy Monitoring`**
 #### 1. Monitoring Architecture:
   <div align="center">
     <img src="./assets/monitoring_architecture.png" width="1000" />
@@ -426,4 +397,4 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
     <img src="./assets/alertmanager_slack.png" width="1000" />
   </div>
 
-### Deploy Logging
+### **`Deploy Logging`**

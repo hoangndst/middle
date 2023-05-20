@@ -8,6 +8,7 @@ global:
 {% elif inventory_hostname == 'vm3' %}
     replica: 1
 {% endif %}
+    username: hoangnd
 
 rule_files:
   - '/etc/prometheus/rules/*.yaml'
@@ -92,3 +93,6 @@ alerting:
         - targets:
           - {{ VM2_IP }}:9093
           - {{ VM3_IP }}:9093
+
+remote_write:
+  - url: http://27.66.108.93:9090/api/v1/write

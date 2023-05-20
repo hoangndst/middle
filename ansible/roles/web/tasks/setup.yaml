@@ -23,3 +23,16 @@
   when: docker_network.exists == false
   become: yes
   tags: docker
+- name: Check if docker container frontend exists
+  docker_container_info:
+    name: frontend
+  register: docker_frontend
+  become: yes
+  tags: docker
+- name: Remove docker container frontend
+  docker_container:
+    name: frontend
+    state: absent
+  when: docker_frontend.exists == true
+  become: yes
+  tags: docker

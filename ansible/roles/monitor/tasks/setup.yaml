@@ -95,14 +95,14 @@
 #   when: inventory_hostname != "vm1"
 #   become: yes
 #   tags: prometheus
-# - name: Copy prometheus config file
-#   template:
-#     src: prometheus.yml.j2
-#     dest: /etc/prometheus/prometheus.yml
-#     mode: 0644
-#   when: inventory_hostname != "vm1"
-#   become: yes
-#   tags: prometheus
+- name: Copy prometheus config file
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    mode: 0644
+  when: inventory_hostname != "vm1"
+  become: yes
+  tags: prometheus
 # - name: Create /etc/thanos directory if not exists
 #   file:
 #     path: /etc/thanos

@@ -11,5 +11,9 @@
       - "27017:27017"
     volumes:
       - "{{ MONGO_DB_VOLUME }}:/data/db"
+    log_driver: fluentd
+    log_options:
+      fluentd-address: "{{ FLUENTD_HOST }}:24224"
+      tag: "docker.database-{{ inventory_hostname }}"
   become: yes
   tags: docker
