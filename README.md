@@ -413,7 +413,7 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
   </div>
 #### 4. Result
 - **`Grafana`**: [**`https://grafana.hoangnd.freeddns.org`**](https://grafana.hoangnd.freeddns.org/)
-  - Username: `admin`
+  - Username: `viewer`
   - Password: `Hoang1999`
   <div align="center">
     <img src="./assets/grafana_cadvisor.png" width="1000" />
@@ -512,7 +512,7 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
 - **`Backend`**: [**`https://vdt-backend.hoangnd.freeddns.org`**](https://vdt-backend.hoangnd.freeddns.org/interns)
 - **`Traefik`**: [**`https://traefik.hoangnd.freeddns.org`**](https://traefik.hoangnd.freeddns.org/)
 - **`Grafana`**: [**`https://grafana.hoangnd.freeddns.org`**](https://grafana.hoangnd.freeddns.org/)
-  - username: `admin`
+  - username: `viewer`
   - password: `Hoang1999`
 - **`Thanos - Prometheus`**: [**`https://thanos.hoangnd.freeddns.org`**](https://thanos.hoangnd.freeddns.org/)
 - **`Alert Manager`**: [**`https://alertmanager.hoangnd.freeddns.org`**](https://alertmanager.hoangnd.freeddns.org/)
