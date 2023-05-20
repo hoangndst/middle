@@ -2,9 +2,9 @@
   gather_facts: no
   roles:
     # - lb
-    - db
+    # - db
     # - api
     # - web
     # - monitor
-    # - log
+    - log
 

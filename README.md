@@ -408,7 +408,9 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
   ansible-playbook -i inventories/digitalocean/hosts deploy.yaml -K
   ```
   Type your sudo password when prompted
-
+  <div align="center">
+    <img src="./assets/ansible_monitoring.png" width="1000" />
+  </div>
 #### 4. Result
 - **`Grafana`**: [**`https://grafana.hoangnd.freeddns.org`**](https://grafana.hoangnd.freeddns.org/)
   - Username: `admin`
@@ -492,7 +494,9 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
   ansible-playbook -i inventories/digitalocean/hosts deploy.yaml -K
   ```
   Type your sudo password when prompted
-
+  <div align="center">
+    <img src="./assets/ansible_logging.png" width="1000" />
+  </div>
 #### 3. Result
 - Fluentd Container Logs
   <div align="center">
