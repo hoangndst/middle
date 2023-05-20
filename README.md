@@ -1,5 +1,5 @@
 
-### Develop a simple 3-tier web application 
+## VDT - Midterm Project
 
 ### **`Containerization`**
 1. Move to [`frontend`](./webapp/frontend/) directory and build docker image
