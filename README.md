@@ -38,8 +38,22 @@
   - Using pytest to test backend: [**test.py**](./webapp/backend/app/test.py)
   - Deploy test mongo database
   - Setup Github Action Workflow: [**test_backend.yml**](.github/workflows/test_backend.yml)
-
+  - Run when push to master branch or open pull request
+    ``` yaml
+    ...
+    on:
+    push:
+      branches: [master]
+      paths:
+        - "webapp/backend/**"
+    pull_request:
+      branches: [master]
+      paths:
+        - "webapp/backend/**"
+    ...
+    ```
 #### 2. Auto run unit test when push to github
+
   <div align="center">
     <img src="./assets/ci_push_master.png" width="1000" />
   </div>
@@ -55,7 +69,24 @@
   </div>
 
 ### **`Continuous Delivery`**
-
+1. Setup Github Action Workflow: [**ci_backend.yml**](.github/workflows/ci_backend.yaml)
+  - Config run when has new release with format `release/v*`
+    ``` yaml
+    ...
+    push:
+      tags:
+        - release/v*
+    ...
+    ```
+2. Auto build docker image and push to docker hub
+  - Create new `tag/release`
+    <div align="center">
+      <img src="./assets/ci_new_tag.png" width="1000" />
+    </div>
+  - Auto Build and Push to Docker Hub
+    <div align="center">
+      <img src="./assets/ci_build_and_push.png" width="1000" />
+    </div>
 ### **`Create NFS server for sharing data between nodes`**
 1. Overview
 We will use 10GB disk to create NFS server for sharing data between containers. **`/dev/sda`**
@@ -398,3 +429,81 @@ We will use 10GB disk to create NFS server for sharing data between containers. 
   </div>
 
 ### **`Deploy Logging`**
+#### 1. Build Fluentd Docker Image
+  - [**`Dockerfile`**](./webapp/fluentd/Dockerfile)
+    Install elasticsearch and fluent-plugin-elasticsearch.
+    ``` dockerfile
+    FROM fluent/fluentd:v1.12.0-debian-1.0
+    USER root
+    RUN ["gem", "install", "elasticsearch", "--no-document", "--version", "< 8"]
+    RUN ["gem", "install", "fluent-plugin-elasticsearch", "--no-document", "--version", "5.2.2"]
+    USER fluent
+    ```
+  - Build docker image
+    ``` bash
+    docker build -t hoangndst/fluentd:latest .
+    ```
+  - Push docker image to docker hub
+    ``` bash
+    docker push hoangndst/fluentd:latest
+    ```
+#### 2. Deploy Logging
+- Default variables:
+  - [**`main.yaml`**](./ansible/roles/log/defaults/main.yaml): Default variables for logging
+    - `NETWORK_NAME`: Logging network
+- Files:
+  - [**`Fluentd configuration`**](./ansible/roles/log/files/fluentd/fluent.conf): Fluentd configuration files
+    ``` conf
+    <source>
+      @type forward # Receive events using HTTP or TCP protocol
+      port 24224 # The port to listen to
+      bind 0.0.0.0 # The IP address to listen to
+    </source>
+
+    <match docker.**> # Match events from Docker containers
+      @type copy
+      <store>
+        @type elasticsearch # Send events to Elasticsearch
+        host 171.236.38.100 # The IP address of the Elasticsearch server
+        port 9200 # The port of the Elasticsearch server
+        index_name hoangnd # The name of the index to be created
+        logstash_format true # Enable Logstash format
+        logstash_prefix hoangnd # The prefix of the index to be created
+        logstash_dateformat %Y%m%d # The date format of the index to be created
+        include_tag_key true # Enable including the tag in the record
+        type_name access_log 
+        flush_interval 1s # The interval to flush the buffer
+      </store>
+      <store>
+        @type stdout
+      </store>
+    </match>
+    ```
+- Tasks:
+  - [**`setup.yaml`**](./ansible/roles/log/tasks/setup.yaml): Setup required docker models for ansible, create docker network if not exists.
+  - [**`deploy.yaml`**](./ansible/roles/log/tasks/deploy.yaml): Deploy logging
+  - [**`main.yaml`**](./ansible/roles/log/tasks/main.yaml): Include all tasks
+- Ansible:
+  ```bash
+  ansible-playbook -i inventories/digitalocean/hosts deploy.yaml -K
+  ```
+  Type your sudo password when prompted
+
+#### 3. Result
+- Fluentd Container Logs
+  <div align="center">
+    <img src="./assets/fluentd_container_logs.png" width="1000" />
+  </div>
+- Kibana
+  <div align="center">
+    <img src="./assets/kibana.png" width="1000" />
+  </div>
+
+### **`References`**
+- [**`Prometheus`**](https://prometheus.io/)
+- [**`Alertmanager`**](https://prometheus.io/docs/alerting/latest/alertmanager/)
+- [**`Grafana`**](https://grafana.com/)
+- [**`Minio`**](https://min.io/)
+- [**`Thanos`**](https://thanos.io/)
+- [**`Fluentd`**](https://www.fluentd.org/)
+- [**`Github Actions`**](https://docs.github.com/en/actions)
