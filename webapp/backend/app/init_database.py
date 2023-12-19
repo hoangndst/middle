@@ -100,7 +100,7 @@ interns_data = [
         "major": "Công nghệ thông tin ứng dụng phần mềm",
     },
     {
-        "name": "Nguyen Duc Vinh Data",
+        "name": "Nguyen Duc Vinh",
         "year_of_birth": 2002,
         "sex": "Nam",
         "university": "Học viện Công nghệ Bưu chính Viễn thông",
