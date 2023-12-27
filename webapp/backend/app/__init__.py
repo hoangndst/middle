@@ -4,6 +4,7 @@ from app.init_database import init_db
 from config import Config
 
 init_db()
+# test
 
 def create_app(config_class=Config):
     app = Flask(__name__)
